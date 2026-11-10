@@ -116,10 +116,31 @@ const categoryData = [
 ];
 
 function categoryMapMarkup() {
-  const points = [[500,35],[720,80],[890,200],[940,350],[890,500],[700,625],[300,625],[110,500],[60,350],[110,200],[280,80],[500,665]];
-  const lines = points.map(([x,y]) => `<line x1="500" y1="350" x2="${x}" y2="${y}" />`).join('');
-  const cards = categoryData.map((category, index) => `<a class="map-category map-category-${index}" href="${category.slug}.html"><span>${category.icon}</span><b>${category.name}</b><small>Utforska →</small></a>`).join('');
-  return `<div class="category-map"><svg class="map-lines" viewBox="0 0 1000 700" aria-hidden="true">${lines}<circle cx="500" cy="350" r="105" /></svg><div class="map-center"><img src="assets/bergfelds-wordmark.svg" alt="Bergfelds"><span>12 produktområden</span></div>${cards}</div>`;
+  const cardPositions = [
+    ['kullager', 'left-one'], ['kap-och-slip', 'left-two'], ['svets', 'left-three'],
+    ['verktyg', 'left-four'], ['tryckluft', 'left-five'], ['vvs', 'top-center'],
+    ['kyla', 'right-one'], ['infastning', 'right-two'], ['tatningar', 'right-three'],
+    ['drivremmar', 'right-four'], ['mark-och-va', 'right-five'], ['smorjmedel', 'bottom-center']
+  ];
+  const mapIcons = {
+    'kullager': '<circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="5"/><circle cx="16" cy="7" r="1.5"/><circle cx="16" cy="25" r="1.5"/><circle cx="7" cy="16" r="1.5"/><circle cx="25" cy="16" r="1.5"/>',
+    'vvs': '<path d="M5 10h12v6h5v4h-8v-6H5zM8 10V6h6v4M24 20v4M21 24h6"/>',
+    'kyla': '<path d="M16 3v26M5 9l22 14M27 9L5 23M12 5l4 4 4-4M12 27l4-4 4 4M5 14l5 2-5 2M27 14l-5 2 5 2"/>',
+    'infastning': '<path d="M8 5l19 19-4 4L4 9zM10 7l-4 4M15 12l-4 4M20 17l-4 4M25 22l-4 4"/>',
+    'kap-och-slip': '<circle cx="11" cy="18" r="6"/><circle cx="11" cy="18" r="2"/><path d="M16 14l9-9 2 2-9 9M19 20l9 3M20 24l6 5"/>',
+    'svets': '<path d="M7 6h14l3 13H10zM10 19v7h11v-7M4 24l-2 3M6 27l-1 3M26 24l3 2M25 28l2 2"/>',
+    'tatningar': '<ellipse cx="12" cy="17" rx="9" ry="5" transform="rotate(-25 12 17)"/><ellipse cx="21" cy="15" rx="9" ry="5" transform="rotate(25 21 15)"/>',
+    'drivremmar': '<circle cx="9" cy="21" r="5"/><circle cx="24" cy="10" r="4"/><path d="M6 17L21 7M12 25l15-12"/>',
+    'verktyg': '<path d="M5 5l8 8M19 19l8 8M10 22l-5 5M22 10l5-5M4 4l5 1 1 5-3 3M28 28l-5-1-1-5 3-3"/>',
+    'tryckluft': '<rect x="5" y="13" width="22" height="11" rx="4"/><path d="M10 13V9h8v4M22 13V7h4v6M9 24v3M23 24v3M2 17h3"/>',
+    'smorjmedel': '<path d="M5 13h18l-2 13H8zM8 13l3-6h8l4 6M24 20c4-5 6-2 4 1-1 2-3 2-4-1z"/>',
+    'mark-och-va': '<path d="M5 24h22M8 24l3-8h10l3 8M12 16l2-7h5l2 7M16 9V5M13 5h6"/>'
+  };
+  const cards = cardPositions.map(([slug, position]) => {
+    const category = categoryData.find((item) => item.slug === slug);
+    return `<a class="map-category map-category-${position}" href="${category.slug}.html"><span class="map-icon"><svg viewBox="0 0 32 32" aria-hidden="true">${mapIcons[category.slug]}</svg></span><b>${category.name}</b><span class="map-arrow" aria-hidden="true">›</span></a>`;
+  }).join('');
+  return `<div class="category-map"><svg class="map-lines" viewBox="0 0 1120 610" preserveAspectRatio="none" aria-hidden="true"><path d="M560 98V258M560 352V512M368 305H752M368 305C325 305 320 132 268 132M368 305C325 305 320 220 268 220M368 305C325 305 320 305 268 305M368 305C325 305 320 390 268 390M368 305C325 305 320 478 268 478M752 305C795 305 800 132 852 132M752 305C795 305 800 220 852 220M752 305C795 305 800 305 852 305M752 305C795 305 800 390 852 390M752 305C795 305 800 478 852 478"/></svg><div class="map-center"><img src="assets/bergfelds-wordmark.svg" alt="Bergfelds – Industri, VVS och verkstad"></div>${cards}</div>`;
 }
 
 document.querySelectorAll('[data-category-map]').forEach((container) => {
