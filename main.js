@@ -100,6 +100,56 @@ if (quickForm) {
   });
 }
 
+const categoryData = [
+  { slug: 'kullager', name: 'Kullager', icon: '◎', image: 'assets/industry.jpg', description: 'Kullager och relaterade komponenter för industrins drift och underhåll.', groups: [['Kullager', 'Kullager för olika behov inom drift och underhåll.'], ['Lagerenheter', 'Lagerenheter ingår i det verifierade sortimentsunderlaget.']] },
+  { slug: 'vvs', name: 'VVS', icon: '⌁', image: 'assets/editorial/plumbing-pipes.jpg', description: 'VVS-produkter, förbrukningsmaterial och tillbehör för professionell användning.', groups: [['VVS-produkter', 'Produkter för professionell VVS-användning.'], ['Förbrukningsmaterial', 'Förbrukningsmaterial för det dagliga arbetet.'], ['Tillbehör', 'Tillbehör inom det befintliga VVS-sortimentet.']] },
+  { slug: 'kyla', name: 'Kyla', icon: '✣', image: 'assets/plumbing.jpg', description: 'Kyla är ett av Bergfelds angivna produktområden.', groups: [] },
+  { slug: 'infastning', name: 'Infästning', icon: '⌖', image: 'assets/bergfelds-product-overview.jpg', description: 'Infästningsprodukter för professionella verksamheter och montage.', groups: [['Skruv', 'Skruv ingår i det verifierade sortimentsunderlaget.'], ['Mutter & bult', 'Mutter och bult för professionell användning.'], ['Gängstång', 'Gängstång inom produktområdet fästelement.'], ['Plugg & ankare', 'Plugg och ankare för olika montagebehov.']] },
+  { slug: 'kap-och-slip', name: 'Kap & Slip', icon: '◒', image: 'assets/editorial/workshop-tools.jpg', description: 'Produkter för kapning, slipning och skärande bearbetning.', groups: [['Klingor', 'Klingor finns angivet under skärande verktyg.'], ['Slipskivor', 'Slipskivor finns angivet under skärande verktyg.'], ['Skärande verktyg', 'Borrar, fräsar och svarvverktyg ingår i underlaget.']] },
+  { slug: 'svets', name: 'Svets', icon: '⌁', image: 'assets/editorial/cnc-workshop.jpg', description: 'Svetsutrustning, material, gas och skydd för professionellt arbete.', groups: [['Svetsutrustning', 'Utrustning för svetsarbete.'], ['Tillsatsmaterial', 'Tillsatsmaterial ingår i sortimentsunderlaget.'], ['Industrigas', 'Industrigas är angivet inom svetsning och gas.'], ['Skydd', 'Skydd för arbete inom svetsning.']] },
+  { slug: 'tatningar', name: 'Tätningar', icon: '◌', image: 'assets/industry.jpg', description: 'Tätningar är ett av Bergfelds angivna produktområden.', groups: [] },
+  { slug: 'drivremmar', name: 'Drivremmar', icon: '∞', image: 'assets/industry.jpg', description: 'Drivremmar är ett av Bergfelds angivna produktområden.', groups: [] },
+  { slug: 'verktyg', name: 'Verktyg', icon: '⌕', image: 'assets/editorial/workshop-tools.jpg', description: 'Handverktyg, elverktyg, maskiner och skärande verktyg för arbetsdagen.', groups: [['Handverktyg', 'Nycklar, tänger, hylsor, bits, sågar och verktygssatser.'], ['Elverktyg & maskiner', 'Borr, slip, sågar, skruvdragare och tillbehör.'], ['Skärande verktyg', 'Borrar, fräsar, svarvverktyg, klingor och slipskivor.']] },
+  { slug: 'tryckluft', name: 'Tryckluft', icon: '≈', image: 'assets/workshop.jpg', description: 'Kompressorer, luftverktyg och tillbehör för tryckluft.', groups: [['Kompressorer', 'Kompressorer ingår i det verifierade sortimentsunderlaget.'], ['Luftverktyg', 'Verktyg för tryckluft.'], ['Slang & tillbehör', 'Slang och tillbehör för tryckluftssystem.']] },
+  { slug: 'smorjmedel', name: 'Smörjmedel', icon: '◢', image: 'assets/industry.jpg', description: 'Smörjmedel och kemprodukter för drift, underhåll och montage.', groups: [['Oljor', 'Oljor inom smörjmedel och kem.'], ['Fett', 'Fett för underhåll och professionell användning.'], ['Avfettning', 'Avfettning ingår i det angivna sortimentet.'], ['Lim, fog & gänglåsning', 'Lim, fog och gänglåsning finns angivet i underlaget.']] },
+  { slug: 'mark-och-va', name: 'Mark & VA', icon: '⌇', image: 'assets/editorial/warehouse-logistics.jpg', description: 'Mark & VA är ett av Bergfelds angivna produktområden.', groups: [] }
+];
+
+function categoryMapMarkup() {
+  const points = [[500,35],[720,80],[890,200],[940,350],[890,500],[700,625],[300,625],[110,500],[60,350],[110,200],[280,80],[500,665]];
+  const lines = points.map(([x,y]) => `<line x1="500" y1="350" x2="${x}" y2="${y}" />`).join('');
+  const cards = categoryData.map((category, index) => `<a class="map-category map-category-${index}" href="${category.slug}.html"><span>${category.icon}</span><b>${category.name}</b><small>Utforska →</small></a>`).join('');
+  return `<div class="category-map"><svg class="map-lines" viewBox="0 0 1000 700" aria-hidden="true">${lines}<circle cx="500" cy="350" r="105" /></svg><div class="map-center"><img src="assets/bergfelds-wordmark.svg" alt="Bergfelds"><span>12 produktområden</span></div>${cards}</div>`;
+}
+
+document.querySelectorAll('[data-category-map]').forEach((container) => {
+  container.innerHTML = categoryMapMarkup();
+});
+
+if (document.body.classList.contains('page-sortiment')) {
+  const productSection = document.querySelector('.page-sortiment .page-hero + .section');
+  if (productSection) {
+    const mapSection = document.createElement('section');
+    mapSection.className = 'section category-map-directory';
+    mapSection.innerHTML = `<div class="container"><div class="catalog-heading"><em>12 PRODUKTOMRÅDEN</em><h2>Välj område och utforska vidare</h2><p>Varje område har en egen informationssida med verifierade produktgrupper och kontaktvägar.</p></div>${categoryMapMarkup()}</div>`;
+    productSection.before(mapSection);
+  }
+}
+
+const categoryRoot = document.querySelector('[data-category-page]');
+if (categoryRoot) {
+  const slug = document.body.dataset.category;
+  const category = categoryData.find((item) => item.slug === slug);
+  if (category) {
+    document.title = `${category.name} | Bergfelds`;
+    const groupCards = category.groups.length
+      ? category.groups.map(([name, description]) => `<article class="product-group-card"><img src="${category.image}" alt="Illustrativ miljöbild för ${name}" loading="lazy"><div><h3>${name}</h3><p>${description}</p><a href="kontakta-oss.html?kategori=${encodeURIComponent(category.name)}">Fråga om ${name.toLowerCase()} →</a></div></article>`).join('')
+      : `<article class="category-pending"><span>${category.icon}</span><div><h3>Produktgrupper kompletteras</h3><p>Detaljerad och verifierad gruppindelning saknas ännu för ${category.name}. Kontakta Bergfelds så hjälper vi dig utifrån ditt behov.</p></div></article>`;
+    const related = categoryData.filter((item) => item.slug !== slug).slice(0, 4).map((item) => `<a href="${item.slug}.html"><span>${item.icon}</span>${item.name}</a>`).join('');
+    categoryRoot.innerHTML = `<section class="category-hero"><img src="${category.image}" alt="Illustrativ miljöbild för ${category.name}"><div class="category-hero-shade"></div><div class="container"><a class="category-back" href="index.html#sortimentskarta">← Till sortimentsöversikten</a><p class="kicker">PRODUKTOMRÅDE</p><h1>${category.name}</h1><p>${category.description}</p><a class="button primary" href="kontakta-oss.html?kategori=${encodeURIComponent(category.name)}">Fråga oss om ${category.name}</a></div></section><section class="section category-groups"><div class="container"><div class="section-intro"><div><p class="kicker blue">PRODUKTGRUPPER</p><h2>Utforska området.</h2></div><p>Vi visar endast produktgrupper som stöds av befintligt underlag. Bilderna är illustrativa och visar inte lagerstatus.</p></div><div class="product-group-grid">${groupCards}</div></div></section><section class="section related-categories"><div class="container"><p class="kicker blue">FLER OMRÅDEN</p><h2>Fortsätt utforska sortimentet.</h2><div class="related-grid">${related}</div></div></section><section class="category-contact"><div class="container"><div><p class="kicker">PERSONLIG HJÄLP</p><h2>Hittar du inte exakt det du söker?</h2><p>Ring eller mejla Bergfelds och beskriv behovet, artikelnumret eller användningen.</p></div><div><a class="button primary" href="tel:+46240410210">Ring 0240-410 210</a><a class="button light" href="mailto:order@bergfelds.se?subject=${encodeURIComponent(`Förfrågan – ${category.name}`)}">Mejla en förfrågan</a></div></div></section>`;
+  }
+}
+
 const suppliers = [
   { name: 'Milwaukee', image: 'assets/suppliers/milwaukee.png', category: 'verktyg' },
   { name: 'HiKOKI', image: 'assets/suppliers/hikoki.svg', category: 'verktyg' },
