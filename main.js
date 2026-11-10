@@ -263,3 +263,19 @@ if (directory) {
     directory.append(card);
   });
 }
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const revealItems = document.querySelectorAll('main > section:not(:first-child), .section-intro, .section-heading, .product-list > article, .category-catalog > article, .supplier-directory-card, .flow-grid > article, .service-editorial > article');
+
+if (!reduceMotion && 'IntersectionObserver' in window) {
+  document.documentElement.classList.add('reveal-ready');
+  revealItems.forEach((item) => item.setAttribute('data-reveal', ''));
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px' });
+  revealItems.forEach((item) => revealObserver.observe(item));
+}
