@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://samirah90.github.io/Bergfleds-6/sitemap.xml
